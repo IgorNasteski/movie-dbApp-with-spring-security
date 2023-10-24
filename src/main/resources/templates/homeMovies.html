@@ -1,6 +1,7 @@
 
 	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -98,15 +99,117 @@
 <body><!-- style="background: url('/img/background5.jpg') no-repeat center center fixed">-->
 
 	<h4 style="color: white; position: fixed; top:20px; margin-left: 20px;">Movies <span style="color:yellow;">App</span></h4>
-	<p style="color: white; position: fixed; top:20px; right:20px;">© Copyright <span style="color:yellow;">Igor Nasteski</span></p>
 
-	<div style="margin-top:20px;">
+	<blockquote class="blockquote text-center" th:style="'color:white; margin-top: 21px; color:yellow;'">
+		<p class="mb-0" th:style="'text-align: center !important;'">
+			<a href="../users/showMyLoginPage" class="btn btn-secondary" th:style="'background-color:blue;color:yellow;width:4%;height:4%;line-height:85%;'">Login</a>
+			or
+			<a href="../users/signUp" class="btn btn-secondary" th:style="'background-color:green;color:yellow;width:5%;height:4%;line-height:85%;'">Register</a>
+			so you can add movies to favourites or contact us via email.
+			<!--If you register and login to our page, you can add movies to favourites, and contact us via email.-->
+		</p>
+		<footer class="blockquote-footer" th:style="'color:white;'">"If you think you are too small to make a difference, try sleeping with a mosquito."<cite title="Source Title">    -I.N. 2021</cite></footer>
+	</blockquote><!--"People say nothing is impossible, but i do nothing every day"-->
+
+	<form th:action="@{/logout}" method="post" th:style="'position: absolute; top: 25px; right: 9px; width: 6%; height: 3%;'">
+		<input type="submit" value="logout" class="btn btn-info" th:style="'width: 79%; height: 155%; line-height: 50%; background-color:red !important;'"></input>
+	</form>
+
+	<p th:style="'color: white; position: fixed; top:45px; left:20px;'">©Copyright <span th:style="'color:yellow;'">Igor Nasteski</span></p>
+
+
+
+
+
+
+
+
+
+	<!-- SAMO ZA MENE/ADMINA - SAMO JA MOGU DA VIDIM -->
+	<!--<div sec:authorize="hasRole('ADMIN')">-->
+	<div sec:authorize="hasAuthority('ADMIN')">
+		<p>Text visible to admin.</p>	<br>
+		<a th:href="@{admin/homeAdmin}" class="btn btn-primary">ADMIN ONLY</a>        <br><br>
+	</div>
+<div sec:authorize="hasAuthority('USER')">
+	<p>Text visible to users.</p>	<br>
+	<a th:href="@{users/userPath}" class="btn btn-primary">USER ONLY</a>        <br><br>
+</div>
+
+	<div sec:authorize="hasRole('ADMIN')">
+		<p>Text visible to admin.</p>	<br>
+		<a th:href="@{/systems}" class="btn btn-primary">ADMIN ONLY</a>        <br><br>
+		<a th:href="@{customers/employeeAdminListCustomers}" class="btn btn-primary">LOOK AT LIST OF Customers</a>
+		<br><br>
+		<a th:href="@{users/employeeAdminListUsers}" class="btn btn-primary">LOOK AT LIST OF Users</a>
+		<br><br>
+		<a th:href="@{mojMailKontroler/goToFormForMail}" class="btn btn-primary">SEND MAIL WITHOUT ATTACHMENTS</a>
+		<br><br>
+		<a th:href="@{mojMailKontroler/goToFormForMailWithAttachment}" class="btn btn-primary">SEND MAIL WITH ATTACHMENTS</a>
+	</div>
+
+<div sec:authorize="isAuthenticated()">
+	<p>Text visible only to authenticated users.</p>
+</div>
+
+<br>
+
+<div><h3>Authenticated username:</h3>
+	<h2 sec:authentication="name"></h2>
+</div>
+
+<div><h3>Authenticated users roles:</h3>
+	<h2 sec:authentication="principal.authorities"></h2>	<!-- OVAKO CE ISPISATI [ROLE_ADMIN] [ROLE_EMPLOYEE] [ROLE_ADMIN] -->
+
+	<!--THYMELEAF OBEZBEDJUJE PRISTUP #authentication OBJEKTU GDE VRACAMO LISTU AUTHORITIES-A, PA MOZEMO RECI DA UKLONI "ROLE_" PRI ISPISU
+        OVAKO CE ISPISATI BEZ ROLE_ (ADMIN ILI MANAGER ILI EMPLOYEE) -->
+	<!--<p th:each="authority : ${#authentication.getAuthorities()}"
+	   th:if="${authority.getAuthority().startsWith('ROLE_')}"
+	   th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
+	</p>-->
+</div>
+
+	<div class="container">
+		<div class="row" sec:authorize="isAuthenticated()">
+			<h2 style="color:green">User is Logged In - OVDE VRV MOGU DA UBACIM LOGOUT DUGME STO IMA SMISLA JER SE OVO PRIKAZUJE SAMO AKO JE ULOGOVAN</h2>
+			<p sec:authentication="principal.username">username</p>
+		</div>
+		<div class="row" sec:authorize="!isAuthenticated()">
+			<h2 style="color:red">User is Logged Out - OVO SE PRIKAZUJE SAMO AKO JE IZLOGOVAN</h2>
+		</div>
+		<div class="row" sec:authorize="hasRole('ADMIN')">
+			<h2>This will only be displayed if authenticated users has role ROLE_ADMIN.</h2>
+		</div>
+		<div class="row" sec:authorize="hasRole('USER')">
+			<h2>This will only be displayed if authenticated users has role ROLE_USER.</h2>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div style="margin-top:30px;">
 		<div class="flex-container" style="margin:0px auto !important; width: 100%;/* text-align: center; */">
 			<div style="margin:0 auto;">
 				<a href="../" class="btn btn-secondary" style="background-color:yellow;color:black;">Top Rated</a>
 				<a href="../newPopularMovies" class="btn btn-secondary" style="background-color:yellow;color:black;">Popular</a>
 				<a href="../upcomingMovies" class="btn btn-secondary" style="background-color:yellow;color:black;">Upcoming</a>
 				<a href="../nowPlayingMovies" class="btn btn-secondary" style="background-color:yellow;color:black;">Now Playing</a>
+				<!--<a href="../users/showMyLoginPage" class="btn btn-secondary" style="background-color:yellow;color:black;">LOGIN/REGI</a>-->
 			</div>
 		</div>
 	</div>
@@ -138,8 +241,9 @@
 						<li th:style="'height:18px !important;'"><span th:style="'color:yellow;'">Vote average:  </span><p th:text="${topRatedMovie.movieVotesAverage}" th:style="'position: relative; bottom: 16px; left: 100px;'"/></li>		<!--	<li>Vote average: 9.2</li>			-->
 						<li th:style="'height:18px !important;'"><span th:style="'color:yellow;'">Total votes  </span><p th:text="${topRatedMovie.numberOfPeopleVoted}" th:style="'position: relative; bottom: 16px; left: 100px;'"/></li>		<!--	<li>Total votes: 4000000</li>		-->
 						<!--<li th:style="'height:18px !important;'"><span th:style="'color:grey;'">IMDB:  </span><p th:text="${topRatedMovie.numberOfPeopleVoted}" th:style="'position: relative; bottom: 16px; left: 100px;'"/></li>		<!--	<li>Total votes: 4000000</li>		-->
-						<li th:style="'height:18px !important;'"><span th:style="'color:yellow;'">IMDB:  </span>
-							<a th:href="@{../posaljiNaImdbKrozKontroler(nazivFilma=${topRatedMovie.title})}" th:target="_blank" th:style="'position: relative; left: 53px;'" class="btn btn-info btn-sm">IMDB</a>
+						<li th:style="'height:18px !important;'">
+							<!--<span th:style="'color:yellow;'">IMDB:  </span>-->
+							<a th:href="@{../posaljiNaImdbKrozKontroler(nazivFilma=${topRatedMovie.title})}" th:target="_blank" th:style="'position: relative; top: 8px;'" class="btn btn-info btn-sm">IMDB</a>
 						</li>
 
 						<!--<li th:style="'height:18px !important;'"><span th:style="'color:grey;'">IMDB:  </span><a th:href="@{../posaljiNaImdbKrozKontroler}" th:field="*{title}" th:target="_blank" th:style="'position: relative; left: 53px;'">IMDB</a></li>-->		<!--	<li>Total votes: 4000000</li>		-->

@@ -97,7 +97,7 @@
 <body><!-- style="background: url('/img/background5.jpg') no-repeat center center fixed">-->
 
 	<h4 style="color: white; position: fixed; top:20px; margin-left: 20px;">Movies <span style="color:yellow;">App</span></h4>
-	<p style="color: white; position: fixed; top:20px; right:20px;">© Copyright <span style="color:yellow;">Igor Nasteski</span></p>
+	<p th:style="'color: white; position: fixed; top:45px; left:20px;'">©Copyright <span th:style="'color:yellow;'">Igor Nasteski</span></p>
 
 	<div style="margin-top:20px;">
 		<div class="flex-container" style="margin:0px auto !important; width: 100%;/* text-align: center; */">
@@ -137,8 +137,9 @@
 					<li th:style="'height:18px !important;'"><span th:style="'color:yellow;'">Vote average:  </span><p th:text="${popularNewMovie.movieVotesAverage}" th:style="'position: relative; bottom: 16px; left: 100px;'"/></li>		<!--	<li>Vote average: 9.2</li>			-->
 					<li th:style="'height:18px !important;'"><span th:style="'color:yellow;'">Total votes  </span><p th:text="${popularNewMovie.numberOfPeopleVoted}" th:style="'position: relative; bottom: 16px; left: 100px;'"/></li>		<!--	<li>Total votes: 4000000</li>		-->
 					<!--<li th:style="'height:18px !important;'"><span th:style="'color:grey;'">IMDB:  </span><p th:text="${popularNewMovie.numberOfPeopleVoted}" th:style="'position: relative; bottom: 16px; left: 100px;'"/></li>		<!--	<li>Total votes: 4000000</li>		-->
-					<li th:style="'height:18px !important;'"><span th:style="'color:yellow;'">IMDB:  </span>
-						<a th:href="@{../posaljiNaImdbKrozKontroler(nazivFilma=${popularNewMovie.title})}" th:target="_blank" th:style="'position: relative; left: 53px;'" class="btn btn-info btn-sm">IMDB</a>
+					<li th:style="'height:18px !important;'">
+						<!--<span th:style="'color:yellow;'">IMDB:  </span>-->
+						<a th:href="@{../posaljiNaImdbKrozKontroler(nazivFilma=${popularNewMovie.title})}" th:target="_blank" th:style="'position: relative; top: 8px;'" class="btn btn-info btn-sm">IMDB</a>
 					</li>
 					<!--<td>									<!-- otvori na novom tabu -->
 					<!--<a th:href="${article.urlOfArticle}" th:target="_blank">link</a>	<!-- th:text="${article.urlOfArticle}" -->
